@@ -1,0 +1,11 @@
+.form__control {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 14px;
+}
+
+.form__error-message {
+    font-size: var(--fs-s);
+    color: hsl(0, 100%, 71%);
+}

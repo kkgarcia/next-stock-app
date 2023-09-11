@@ -1,5 +1,4 @@
 import { AreaChart } from '@tremor/react'
-import { dataFormatter, formatArrayForAreaChart } from '../lib/utils'
 import styles from './Chart.module.css'
 
 export type ChartItem = {
@@ -30,4 +29,20 @@ export default function Chart({ results, ticker }: ChartProps) {
       />
     </div>
   )
+}
+
+function dataFormatter(number: number) {
+  return '$ ' + Intl.NumberFormat('us').format(number).toString()
+}
+
+function formatArrayForAreaChart(array: ChartItem[], ticker: string) {
+  return array.map((item: ChartItem) => {
+    return {
+      [ticker]: item.c,
+      date: Intl.DateTimeFormat('en-GB', {
+        month: 'short',
+        day: 'numeric',
+      }).format(new Date(item.t)),
+    }
+  })
 }
