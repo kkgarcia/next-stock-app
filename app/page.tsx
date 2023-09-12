@@ -2,11 +2,12 @@
 
 import { useState } from 'react'
 import { SyncLoader } from 'react-spinners'
-import useAggregatesData from './api/useAggregatesData'
-import styles from './page.module.css'
 
-import Chart from './components/Chart'
+import useAggregatesData from './api/useAggregatesData'
 import AggregatesForm from './components/AggregatesForm'
+import Chart from './components/Chart'
+
+import styles from './page.module.css'
 
 export type Query = {
   ticker: string

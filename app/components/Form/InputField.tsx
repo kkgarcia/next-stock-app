@@ -1,5 +1,6 @@
-import FieldWrapper, { type FieldWrapperPassThroughProps } from './FieldWrapper'
 import { type UseFormRegisterReturn } from 'react-hook-form'
+
+import FieldWrapper, { type FieldWrapperPassThroughProps } from './FieldWrapper'
 
 type InputFieldProps = FieldWrapperPassThroughProps & {
   type?: string

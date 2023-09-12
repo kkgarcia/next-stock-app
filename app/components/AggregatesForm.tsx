@@ -1,13 +1,15 @@
 import React from 'react'
-import { format } from 'date-fns'
 import { type SubmitHandler } from 'react-hook-form'
-import { z, type ZodType } from 'zod'
-import { type Query } from '@/page'
-import styles from './AggregatesForm.module.css'
 
+import { type Query } from '@/page'
+import { format } from 'date-fns'
+import { z } from 'zod'
+
+import DateRangePicker from './Form/DateRangePicker'
 import Form from './Form/Form'
 import InputField from './Form/InputField'
-import DateRangePicker from './Form/DateRangePicker'
+
+import styles from './AggregatesForm.module.css'
 
 const formSchema = z.object({
   ticker: z.string().min(1, { message: '*Ticker name is required' }),
