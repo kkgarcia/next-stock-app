@@ -1,13 +1,29 @@
 'use client'
 
 import { useState } from 'react'
+import { type SubmitHandler } from 'react-hook-form'
 import { SyncLoader } from 'react-spinners'
 
+import { format } from 'date-fns'
+import { z } from 'zod'
+
 import useAggregatesData from './api/useAggregatesData'
-import AggregatesForm from './components/AggregatesForm'
 import Chart from './components/Chart'
+import DateRangePicker from './components/Form/DateRangePicker'
+import Form from './components/Form/Form'
+import InputField from './components/Form/InputField'
 
 import styles from './page.module.css'
+
+const schema = z.object({
+  ticker: z.string().min(1, { message: '*Ticker name is required' }),
+  dateRange: z.object({
+    from: z.date(),
+    to: z.date(),
+  }),
+})
+
+export type FormValues = z.infer<typeof schema>
 
 export type Query = {
   ticker: string
@@ -25,6 +41,16 @@ export default function Home() {
   const { isLoading, isError, error, data, isFetching } =
     useAggregatesData(query)
 
+  const onSubmit: SubmitHandler<FormValues> = (form) => {
+    const query: Query = {
+      ticker: form.ticker.toUpperCase(),
+      from: format(form.dateRange.from, 'yyyy-MM-dd'),
+      to: format(form.dateRange.to, 'yyyy-MM-dd'),
+    }
+
+    setQuery(query)
+  }
+
   if (isError) return <pre>{JSON.stringify(error)}</pre>
 
   return (
@@ -36,7 +62,26 @@ export default function Home() {
               Search your favorite stock
             </div>
             <div className={styles['main-section__form-wrapper']}>
-              <AggregatesForm setQuery={setQuery} />
+              <div className={styles['form-wrapper']}>
+                <Form onSubmit={onSubmit} schema={schema}>
+                  <InputField
+                    type="text"
+                    label="Enter Ticker:"
+                    name="ticker"
+                    placeholder="e.g. AAPL"
+                    className={styles['form__text-input']}
+                  />
+
+                  <DateRangePicker
+                    label="Pick a date range:"
+                    name="dateRange"
+                  />
+
+                  <button className={styles['form__submit-btn']} type="submit">
+                    Search
+                  </button>
+                </Form>
+              </div>
             </div>
           </div>
         </section>

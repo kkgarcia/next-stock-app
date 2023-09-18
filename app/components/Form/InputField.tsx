@@ -1,30 +1,28 @@
-import { type UseFormRegisterReturn } from 'react-hook-form'
+import { useController } from 'react-hook-form'
 
 import FieldWrapper, { type FieldWrapperPassThroughProps } from './FieldWrapper'
 
 type InputFieldProps = FieldWrapperPassThroughProps & {
   type?: string
   className?: string
-  registration: UseFormRegisterReturn
+  name: string
   placeholder?: string
 }
 
 export default function InputField(props: InputFieldProps) {
+  const { label, type = 'text', className, name, placeholder } = props
+
   const {
-    label,
-    error,
-    type = 'text',
-    className,
-    registration,
-    placeholder,
-  } = props
+    field,
+    fieldState: { error },
+  } = useController({ name })
 
   return (
     <FieldWrapper label={label} error={error}>
       <input
         type={type}
         className={className}
-        {...registration}
+        {...field}
         placeholder={placeholder}
       />
     </FieldWrapper>

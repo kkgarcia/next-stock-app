@@ -1,39 +1,36 @@
 import {
-  Controller,
-  type Control,
-  type FieldError,
+  useController,
   type FieldValues,
   type FieldPath,
 } from 'react-hook-form'
 
 import { DateRangePicker } from '@tremor/react'
 
-import FieldWrapper from './FieldWrapper'
+import FieldWrapper, { FieldWrapperPassThroughProps } from './FieldWrapper'
 
-type DateRangePickerProps<TFieldValues extends FieldValues> = {
-  control: Control<TFieldValues>
-  label: string
-  error?: FieldError | undefined
-  name: FieldPath<TFieldValues>
-}
+type DateRangePickerProps<TFieldValues extends FieldValues> =
+  FieldWrapperPassThroughProps & {
+    name: FieldPath<TFieldValues>
+  }
 
 export default function DateRangePickerComponent<
-  TFieldValues extends FieldValues
->(props: DateRangePickerProps<TFieldValues>) {
-  const { control, label, error, name } = props
+  TFieldValues extends FieldValues = FieldValues
+>({ label, name }: DateRangePickerProps<TFieldValues>) {
+  const {
+    field: { value, onChange },
+    fieldState: { error },
+  } = useController({ name })
+
+  if (error) {
+    error.message = '*Date range is required'
+  }
 
   return (
     <FieldWrapper label={label} error={error}>
-      <Controller
-        name={name}
-        control={control}
-        render={({ field: { onChange, value } }) => (
-          <DateRangePicker
-            className="max-w-md mx-auto"
-            value={value}
-            onValueChange={onChange}
-          />
-        )}
+      <DateRangePicker
+        className="max-w-md mx-auto"
+        value={value}
+        onValueChange={onChange}
       />
     </FieldWrapper>
   )

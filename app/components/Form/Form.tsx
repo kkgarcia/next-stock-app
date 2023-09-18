@@ -1,25 +1,29 @@
 import React from 'react'
 import {
   useForm,
+  FormProvider,
   type SubmitHandler,
   type FieldValues,
   type UseFormProps,
-  type UseFormReturn,
 } from 'react-hook-form'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { ZodType, ZodTypeDef } from 'zod'
 
 export type FormProps<TFormValues extends FieldValues, Schema> = {
-  children: (methods: UseFormReturn<TFormValues>) => React.ReactNode
+  children: React.ReactNode
   onSubmit: SubmitHandler<TFormValues>
   schema?: Schema
   options?: UseFormProps<TFormValues>
 }
 
 export default function Form<
-  TFormValues extends FieldValues,
-  Schema extends ZodType<unknown, ZodTypeDef, unknown>
+  TFormValues extends FieldValues = FieldValues,
+  Schema extends ZodType<unknown, ZodTypeDef, unknown> = ZodType<
+    unknown,
+    ZodTypeDef,
+    unknown
+  >
 >(props: FormProps<TFormValues, Schema>) {
   const { children, schema, options, onSubmit } = props
 
@@ -29,6 +33,8 @@ export default function Form<
   })
 
   return (
-    <form onSubmit={methods.handleSubmit(onSubmit)}>{children(methods)}</form>
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onSubmit)}>{children}</form>
+    </FormProvider>
   )
 }

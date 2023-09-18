@@ -1,5 +1,7 @@
 import { type FieldError } from 'react-hook-form'
 
+import { clsx } from 'clsx'
+
 import styles from './FieldWrapper.module.css'
 
 type FieldWrapperProps = {
@@ -9,16 +11,13 @@ type FieldWrapperProps = {
   children: React.ReactNode
 }
 
-export type FieldWrapperPassThroughProps = Omit<
-  FieldWrapperProps,
-  'className' | 'children'
->
+export type FieldWrapperPassThroughProps = Pick<FieldWrapperProps, 'label'>
 
 export default function FieldWrapper(props: FieldWrapperProps) {
   const { className, children, error, label } = props
 
   return (
-    <div className={className || styles['form__control']}>
+    <div className={clsx(className, styles['form__control'])}>
       <label>
         {label}
         <div>{children}</div>

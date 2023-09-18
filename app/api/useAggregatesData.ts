@@ -5,26 +5,14 @@ import { z } from 'zod'
 import { polygonAPI } from '@/lib/axios'
 
 const aggregatesSchema = z.object({
-  adjusted: z.boolean(),
-  next_url: z.string().optional(),
-  queryCount: z.number(),
-  request_id: z.string(),
   results: z.array(
     z
       .object({
         c: z.number(),
-        h: z.number(),
-        l: z.number(),
-        n: z.number(),
-        o: z.number(),
         t: z.number(),
-        v: z.number(),
-        vw: z.number(),
       })
       .optional()
   ),
-  resultsCount: z.number(),
-  status: z.string(),
   ticker: z.string(),
 })
 
@@ -37,21 +25,11 @@ async function getAggregates(
   multiplier: number = 1,
   timespan: string = 'day'
 ) {
-  try {
-    const response = await polygonAPI.get(
-      `/v2/aggs/ticker/${stockTicker}/range/${multiplier}/${timespan}/${from}/${to}`
-    )
+  const response = await polygonAPI.get(
+    `/v2/aggs/ticker/${stockTicker}/range/${multiplier}/${timespan}/${from}/${to}`
+  )
 
-    const validation = aggregatesSchema.safeParse(response.data)
-
-    if (validation.success) {
-      return response.data
-    }
-
-    return validation.error
-  } catch (error) {
-    return error
-  }
+  return aggregatesSchema.parse(response.data)
 }
 
 export default function useAggregatesData(query: Query) {
