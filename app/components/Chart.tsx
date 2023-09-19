@@ -1,16 +1,11 @@
+import { type Aggregates } from '@/api/useAggregatesData'
 import { AreaChart } from '@tremor/react'
-import { dataFormatter, formatArrayForAreaChart } from '../lib/utils'
+
 import styles from './Chart.module.css'
 
-export type ChartItem = {
-  c: string
-  t: string
-}
+export type ChartItem = Aggregates['results'][0]
 
-type ChartProps = {
-  results: ChartItem[]
-  ticker: string
-}
+type ChartProps = Aggregates
 
 export default function Chart({ results, ticker }: ChartProps) {
   const formattedArray = formatArrayForAreaChart(results, ticker)
@@ -21,13 +16,31 @@ export default function Chart({ results, ticker }: ChartProps) {
         Stock price of {ticker} over selected time period
       </h3>
       <AreaChart
+        categories={[ticker]}
         className="h-64 mt-4"
+        colors={['indigo']}
         data={formattedArray}
         index="date"
-        categories={[ticker]}
-        colors={['indigo']}
         valueFormatter={dataFormatter}
       />
     </div>
   )
+}
+
+function dataFormatter(number: number) {
+  return '$ ' + Intl.NumberFormat('us').format(number).toString()
+}
+
+function formatArrayForAreaChart(array: ChartItem[], ticker: string) {
+  if (array.length === 0) return []
+
+  return array.map((item: ChartItem) => {
+    return {
+      date: Intl.DateTimeFormat('en-GB', {
+        day: 'numeric',
+        month: 'short',
+      }).format(new Date(item?.t || '2023-08-05')),
+      [ticker]: item?.c,
+    }
+  })
 }

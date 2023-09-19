@@ -53,9 +53,3 @@ a {
   text-decoration: none;
   color: inherit;
 }
-
-.container {
-  width: min(1140px, 100% - 2rem);
-  margin-inline: auto;
-  height: 100%;
-}

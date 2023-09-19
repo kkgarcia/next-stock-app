@@ -1,15 +1,20 @@
 .chart-card {
     width: min(1000px, 100% - 2rem);
     margin-inline: auto;
-    height: 100%;
     padding: 6px;
     border-radius: 12px;
-    background-color: #fafafa;
-    box-shadow: 2px 2px 4px rgb(189, 189, 189);
+    background-color: hsl(0, 0%, 98%);
+    box-shadow: 2px 2px 4px hsl(0, 0%, 74%)
 }
 
 .chart-card__title {
     font-size: var(--fs-m);
     font-weight: var(--fw-m);
-    color: rgb(148, 148, 148)
+    color: hsl(0, 0%, 58%)
+}
+
+@media (max-width: 950px) {
+    .chart-card {
+        width: 100%;
+    }
 }
