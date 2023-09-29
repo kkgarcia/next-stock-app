@@ -1,0 +1,16 @@
+.main-header {
+    padding: 1.5rem;
+    display: flex;
+    justify-content: center;
+    gap: 1.3rem;
+    background-color: hsl(0, 0%, 56%);
+}
+
+.active-link {
+    color: hsl(0, 0%, 100%);
+    text-decoration: underline;
+}
+
+.link {
+    color: hsl(0, 0%, 88%)
+}
