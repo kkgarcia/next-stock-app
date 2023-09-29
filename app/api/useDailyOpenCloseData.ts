@@ -24,7 +24,7 @@ async function getDailyOpenClose(ticker: string, date: string) {
 }
 
 export default function useDailyOpenCloseData(query: OpenCloseQuery) {
-  const queryResult = useQuery({
+  return useQuery({
     queryKey: ['open-close', query],
     queryFn: () => getDailyOpenClose(query.ticker, query.date),
     refetchOnWindowFocus: false,

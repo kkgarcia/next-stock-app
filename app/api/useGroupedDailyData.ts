@@ -23,7 +23,7 @@ async function getGroupedDaily(date: string) {
 }
 
 export default function useGroupedDailyData(date: string) {
-  const queryResult = useQuery({
+  return useQuery({
     queryKey: ['grouped-daily', date],
     queryFn: () => getGroupedDaily(date),
     refetchOnWindowFocus: false,
